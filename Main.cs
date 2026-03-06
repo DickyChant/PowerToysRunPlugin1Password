@@ -2,7 +2,7 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more info_rmation.
 
-using ManagedCommon;
+using Wox.Plugin.Logger;
 using Microsoft.PowerToys.Settings.UI.Library;
 using OnePassword;
 using OnePassword.Accounts;
@@ -58,9 +58,9 @@ public partial class Main : IPlugin
 
     public void Init(PluginInitContext context)
     {
-        Logger.InitializeLogger("1PasswordPluginLogs");
+
         
-        Logger.LogInfo("Initializing 1Password plugin");
+        Log.Info("Initializing 1Password plugin", GetType());
 
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _context.API.ThemeChanged += OnThemeChanged;
@@ -73,7 +73,7 @@ public partial class Main : IPlugin
             InitializeConfiguration();
         } catch (Exception ex)
         {
-            Logger.LogError(ex.Message);
+            Log.Error(ex.Message, GetType());
         }
 
     }
@@ -89,7 +89,7 @@ public partial class Main : IPlugin
 
     private bool InitializePasswordManager()
     {
-        Logger.LogInfo("Initializing 1Password Manager");
+        Log.Info("Initializing 1Password Manager", GetType());
 
         if (string.IsNullOrEmpty(_settings.OnePasswordInstallPath))
         {
@@ -110,7 +110,7 @@ public partial class Main : IPlugin
 
     private bool InitializeAccountHandling()
     {
-        Logger.LogInfo("Checking for accounts");
+        Log.Info("Checking for accounts", GetType());
 
         if (_disabled || _passwordManager is null) return false;
 
@@ -152,7 +152,7 @@ public partial class Main : IPlugin
 
     private void InitializeLazyVaults()
     {
-        Logger.LogInfo("Initializing Lazy Loading");
+        Log.Info("Initializing Lazy Loading", GetType());
 ;
         if (_disabled || _passwordManager is null) return;
 
@@ -177,7 +177,7 @@ public partial class Main : IPlugin
 
     private void InitializeItems()
     {
-        Logger.LogInfo("Initializing Items");
+        Log.Info("Initializing Items", GetType());
 
         if (_disabled || _passwordManager is null) return;
 
@@ -194,7 +194,7 @@ public partial class Main : IPlugin
 
     private void AddItemsFromVault(IEnumerable<Item> items)
     {
-        Logger.LogInfo("Adding Items From Vault");
+        Log.Info("Adding Items From Vault", GetType());
 
         if (_disabled || _passwordManager is null) return;
 
@@ -241,7 +241,7 @@ public partial class Main : IPlugin
     {
         _disabled = true;
         _disabledReason = reason;
-        Logger.LogWarning(reason);
+        Log.Warn(reason, GetType());
     }
 
 

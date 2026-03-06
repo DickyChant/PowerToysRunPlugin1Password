@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation
+// Copyright (c) Microsoft Corporation
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Wox.Plugin;
 using OnePassword.Accounts;
 using OnePassword.Items;
-using ManagedCommon;
+using Wox.Plugin.Logger;
 using System.Resources;
 
 namespace Community.PowerToys.Run.Plugin._1Password;
@@ -61,15 +61,15 @@ public partial class Main : IReloadable
         // Check if settings have changed, and reload if true, bypassing debounce and reload limits
         if (HaveSettingsChanged(_lastSettings, _settings))
         {
-            Logger.LogDebug("Settings have changed, trying to reload");
+            Log.Debug("Settings have changed, trying to reload", GetType());
             // Debounce: Ignore reloads attempted within debounce threshold
             if ((currentTime - _lastReloadTime) < _debounceThreshold)
             {
-                Logger.LogDebug("Reload attempt ignored due to debounce threshold.");
+                Log.Debug("Reload attempt ignored due to debounce threshold.", GetType());
 
                 // Double the debounce threshold each time it's hit
                 _debounceThreshold = TimeSpan.FromSeconds(_debounceThreshold.TotalSeconds * 2);
-                Logger.LogDebug($"Debounce threshold doubled to {_debounceThreshold.TotalSeconds} seconds.");
+                Log.Debug($"Debounce threshold doubled to {_debounceThreshold.TotalSeconds} seconds.", GetType());
 
 
                 return;
@@ -85,16 +85,16 @@ public partial class Main : IReloadable
             // Check if reload limit has been reached
             if (_reloadCount >= _maxReload)
             {
-                Logger.LogDebug("Max reload depth reached. Possible bug in program. Stopping to prevent rate limit.");
+                Log.Debug("Max reload depth reached. Possible bug in program. Stopping to prevent rate limit.", GetType());
                 return;
             }
         }
         else {
-            Logger.LogDebug("Aborting reload: Settings have not changed.");
+            Log.Debug("Aborting reload: Settings have not changed.", GetType());
             return;
         }
 
-        Logger.LogDebug("Attempting to reload 1Password plugin data");
+        Log.Debug("Attempting to reload 1Password plugin data", GetType());
 
 
 
@@ -105,7 +105,7 @@ public partial class Main : IReloadable
             InitializeItems();
             _reloadCount++;
             _lastReloadTime = currentTime; // Update the last reload time after a successful reload
-            Logger.LogDebug($"Reload count incremented to {_reloadCount} at {currentTime}.");
+            Log.Debug($"Reload count incremented to {_reloadCount} at {currentTime}.", GetType());
         }
     }
 
@@ -115,43 +115,43 @@ public partial class Main : IReloadable
 
         if (oldSettings.OnePasswordInstallPath != newSettings.OnePasswordInstallPath)
         {
-            Logger.LogDebug($"Setting changed: OnePasswordInstallPath from '{oldSettings.OnePasswordInstallPath}' to '{newSettings.OnePasswordInstallPath}'");
+            Log.Debug($"Setting changed: OnePasswordInstallPath from '{oldSettings.OnePasswordInstallPath}' to '{newSettings.OnePasswordInstallPath}'", GetType());
             settingsChanged = true;
         }
 
         if (oldSettings.OnePasswordInitVault != newSettings.OnePasswordInitVault)
         {
-            Logger.LogDebug($"Setting changed: OnePasswordInitVault from '{oldSettings.OnePasswordInitVault}' to '{newSettings.OnePasswordInitVault}'");
+            Log.Debug($"Setting changed: OnePasswordInitVault from '{oldSettings.OnePasswordInitVault}' to '{newSettings.OnePasswordInitVault}'", GetType());
             settingsChanged = true;
         }
 
         if (oldSettings.OnePasswordExcludeVault != newSettings.OnePasswordExcludeVault)
         {
-            Logger.LogDebug($"Setting changed: OnePasswordExcludeVault from '{oldSettings.OnePasswordExcludeVault}' to '{newSettings.OnePasswordExcludeVault}'");
+            Log.Debug($"Setting changed: OnePasswordExcludeVault from '{oldSettings.OnePasswordExcludeVault}' to '{newSettings.OnePasswordExcludeVault}'", GetType());
             settingsChanged = true;
         }
 
         if (oldSettings.OnePasswordEmail != newSettings.OnePasswordEmail)
         {
-            Logger.LogDebug($"Setting changed: OnePasswordEmail from '{oldSettings.OnePasswordEmail}' to '{newSettings.OnePasswordEmail}'");
+            Log.Debug($"Setting changed: OnePasswordEmail from '{oldSettings.OnePasswordEmail}' to '{newSettings.OnePasswordEmail}'", GetType());
             settingsChanged = true;
         }
 
         if (oldSettings.OnePasswordPreloadFavorite != newSettings.OnePasswordPreloadFavorite)
         {
-            Logger.LogDebug($"Setting changed: OnePasswordPreloadFavorite from '{oldSettings.OnePasswordPreloadFavorite}' to '{newSettings.OnePasswordPreloadFavorite}'");
+            Log.Debug($"Setting changed: OnePasswordPreloadFavorite from '{oldSettings.OnePasswordPreloadFavorite}' to '{newSettings.OnePasswordPreloadFavorite}'", GetType());
             settingsChanged = true;
         }
 
         if (oldSettings.WindowsEnableHistory != newSettings.WindowsEnableHistory)
         {
-            Logger.LogDebug($"Setting changed: WindowsEnableHistory from '{oldSettings.WindowsEnableHistory}' to '{newSettings.WindowsEnableHistory}'");
+            Log.Debug($"Setting changed: WindowsEnableHistory from '{oldSettings.WindowsEnableHistory}' to '{newSettings.WindowsEnableHistory}'", GetType());
             settingsChanged = true;
         }
 
         if (oldSettings.WindowsEnableRoaming != newSettings.WindowsEnableRoaming)
         {
-            Logger.LogDebug($"Setting changed: WindowsEnableRoaming from '{oldSettings.WindowsEnableRoaming}' to '{newSettings.WindowsEnableRoaming}'");
+            Log.Debug($"Setting changed: WindowsEnableRoaming from '{oldSettings.WindowsEnableRoaming}' to '{newSettings.WindowsEnableRoaming}'", GetType());
             settingsChanged = true;
         }
 

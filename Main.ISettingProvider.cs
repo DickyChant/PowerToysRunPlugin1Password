@@ -1,8 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation
+// Copyright (c) Microsoft Corporation
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using ManagedCommon;
+using Wox.Plugin.Logger;
 using Microsoft.PowerToys.Settings.UI.Library;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ public partial class Main : ISettingProvider
 
     public void UpdateSettings(PowerLauncherPluginSettings settings)
     {
-        Logger.LogDebug("Settings updated...");
+        Log.Debug("Settings updated...", GetType());
 
         _lastSettings = new PluginSettings(_rm);
 
