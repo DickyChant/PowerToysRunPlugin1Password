@@ -2,6 +2,7 @@
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more info_rmation.
 
+using ManagedCommon;
 using Wox.Plugin.Logger;
 using Microsoft.PowerToys.Settings.UI.Library;
 using OnePassword;
