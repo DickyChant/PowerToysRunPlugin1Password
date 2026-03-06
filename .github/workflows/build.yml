@@ -19,15 +19,6 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Get PowerToys MSBuild References
-      run: |
-        mkdir Lib
-        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/PowerToys.Common.UI.dll" -OutFile "Lib\PowerToys.Common.UI.dll" -ErrorAction SilentlyContinue 
-        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/PowerToys.ManagedCommon.dll" -OutFile "Lib\PowerToys.ManagedCommon.dll" -ErrorAction SilentlyContinue
-        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/PowerToys.Settings.UI.Lib.dll" -OutFile "Lib\PowerToys.Settings.UI.Lib.dll" -ErrorAction SilentlyContinue
-        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/Wox.Infrastructure.dll" -OutFile "Lib\Wox.Infrastructure.dll" -ErrorAction SilentlyContinue
-        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/Wox.Plugin.dll" -OutFile "Lib\Wox.Plugin.dll" -ErrorAction SilentlyContinue
-
     - name: Restore dependencies
       run: dotnet restore 1PasswordPlugin.sln
 
