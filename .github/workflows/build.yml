@@ -19,16 +19,14 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Download and extract PowerToys dependencies
+    - name: Get PowerToys MSBuild References
       run: |
-        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/releases/download/v0.80.1/PowerToysSetup-0.80.1-x64.exe" -OutFile "PowerToys.exe"
-        7z x PowerToys.exe -o"ExtractedPowerToys"
         mkdir Lib
-        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\PowerToys.Common.UI.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
-        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\PowerToys.ManagedCommon.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
-        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\PowerToys.Settings.UI.Lib.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
-        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\Wox.Infrastructure.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
-        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\Wox.Plugin.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
+        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/PowerToys.Common.UI.dll" -OutFile "Lib\PowerToys.Common.UI.dll" -ErrorAction SilentlyContinue 
+        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/PowerToys.ManagedCommon.dll" -OutFile "Lib\PowerToys.ManagedCommon.dll" -ErrorAction SilentlyContinue
+        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/PowerToys.Settings.UI.Lib.dll" -OutFile "Lib\PowerToys.Settings.UI.Lib.dll" -ErrorAction SilentlyContinue
+        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/Wox.Infrastructure.dll" -OutFile "Lib\Wox.Infrastructure.dll" -ErrorAction SilentlyContinue
+        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/raw/v0.80.1/src/modules/launcher/Wox.Plugin/bin/Release/net8.0-windows/Wox.Plugin.dll" -OutFile "Lib\Wox.Plugin.dll" -ErrorAction SilentlyContinue
 
     - name: Restore dependencies
       run: dotnet restore 1PasswordPlugin.sln
