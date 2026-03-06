@@ -19,6 +19,17 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    - name: Download and extract PowerToys dependencies
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/microsoft/PowerToys/releases/download/v0.80.1/PowerToysSetup-0.80.1-x64.exe" -OutFile "PowerToys.exe"
+        7z x PowerToys.exe -o"ExtractedPowerToys"
+        mkdir Lib
+        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\PowerToys.Common.UI.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
+        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\PowerToys.ManagedCommon.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
+        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\PowerToys.Settings.UI.Lib.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
+        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\Wox.Infrastructure.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
+        Copy-Item -Path "ExtractedPowerToys\WinUI3Apps\Wox.Plugin.dll" -Destination "Lib\" -ErrorAction SilentlyContinue
+
     - name: Restore dependencies
       run: dotnet restore 1PasswordPlugin.sln
 
