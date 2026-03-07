@@ -30,7 +30,9 @@ jobs:
 
     - name: Package release
       run: |
-        Compress-Archive -Path "bin\Release\net9.0-windows\*" -DestinationPath "_1Password-v1.6.0-x64-fix.zip"
+        $outDir = Get-ChildItem -Path bin -Recurse -Filter "Community.PowerToys.Run.Plugin._1Password.dll" | Select-Object -First 1 -ExpandProperty DirectoryName
+        Write-Host "Found output at: $outDir"
+        Compress-Archive -Path "$outDir\*" -DestinationPath "_1Password-v1.6.0-x64-fix.zip"
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
