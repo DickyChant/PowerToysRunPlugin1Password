@@ -1,10 +1,13 @@
-name: Build Plugin
+name: Build and Release Plugin
 
 on:
   push:
     branches:
       - fix-logger
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -25,8 +28,16 @@ jobs:
     - name: Build plugin
       run: dotnet build 1PasswordPlugin.sln -c Release --no-restore
 
-    - name: Archive build artifacts
-      uses: actions/upload-artifact@v4
+    - name: Package release
+      run: |
+        Compress-Archive -Path "bin\Release\net9.0-windows\*" -DestinationPath "_1Password-v1.6.0-x64-fix.zip"
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: 1Password-Plugin-v0.97.2.0
-        path: bin\Release\net9.0-windows\
+        tag_name: v1.6.0-fix
+        name: "1Password Plugin v1.6.0 (PowerToys v0.97.2 fix)"
+        body: |
+          Fixed MissingMethodException for PowerToys v0.97.2.0.
+          Migrated from ManagedCommon.Logger to Wox.Plugin.Logger.
+        files: _1Password-v1.6.0-x64-fix.zip
