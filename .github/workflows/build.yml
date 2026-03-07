@@ -26,7 +26,7 @@ jobs:
       run: dotnet restore 1PasswordPlugin.sln
 
     - name: Build plugin
-      run: dotnet build 1PasswordPlugin.sln -c Release --no-restore
+      run: dotnet build 1PasswordPlugin.sln -c Release -a x64 --no-restore
 
     - name: Package release
       run: |
